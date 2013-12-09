@@ -22,7 +22,7 @@
 (defn initial-data []
   (map (comp all-corners mapify)
        (with-open [in-file (io/reader "/Users/nick/Downloads/presents.csv")]
-         (doall (take 10 (rest (csv/read-csv in-file)))))))
+         (doall (take 1000 (rest (csv/read-csv in-file)))))))
 
 initial-data
 
@@ -46,14 +46,14 @@ initial-data
   {:id 1, :x 0, :y 5, :z 3}
   {:id 1, :x 2, :y 5, :z 3}])
 
-(map line-out
-     (reverse
-      (reduce (fn [result item]
-                (let [z-offset (max-z-of-all-corners (first result))]
-                  (cons (offset [0 0 z-offset] item)
-                        result)))
-              nil
-              (initial-data)
-              )))
-
-(map all-corners initial-data)
+(time
+ (cons "id,x1,y1,z1,x2,y2,z2,x3,y3,z3,x4,y4,z4,x5,y5,z5,x6,y6,z6,x7,y7,z7,x8,y8,z8"
+       (map line-out
+            (reverse
+             (reduce (fn [result item]
+                       (let [z-offset (max-z-of-all-corners (first result))]
+                         (cons (offset [0 0 z-offset] item)
+                               result)))
+                     nil
+                     (initial-data)))))
+ )
